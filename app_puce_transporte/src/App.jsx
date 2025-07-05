@@ -1,34 +1,45 @@
 // app_puce/src/App.jsx
-
 import React, { useState, useEffect } from 'react';
-import './App.css'; // Ensure this file exists for basic styles
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import './App.css'; // Asegúrate de que este archivo exista para estilos básicos
+
+// Importa los nuevos componentes desde la carpeta 'components'
+import AuthPage from './components/AuthPage';
+import Dashboard from './components/Dashboard';
+import Horarios from './components/Horarios';
+import Reserva from './components/Reserva';
+import UsuariosRegistrados from './components/UsuariosRegistrados';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
-  // State for storing the list of users fetched from the backend
+  // Estado para la lista de usuarios obtenida del backend
   const [usuarios, setUsuarios] = useState([]);
-  // State for the registration form fields
+  // Estado para los campos del formulario de registro
   const [registroForm, setRegistroForm] = useState({
     nombre: '',
     apellido: '',
     email: '',
     contrasena: '',
-    rol: 'estudiante', // Default role
+    rol: 'estudiante', // Rol por defecto
     telefono: ''
   });
-  // State for the login form fields
+  // Estado para los campos del formulario de inicio de sesión
   const [loginForm, setLoginForm] = useState({
     email: '',
     contrasena: ''
   });
-  // State for displaying messages to the user (success/error)
+  // Estado para mostrar mensajes al usuario (éxito/error)
   const [mensaje, setMensaje] = useState('');
-  // State to store the currently logged-in user's data
-  const [usuarioLogeado, setUsuarioLogeado] = useState(null);
+  // Estado para almacenar los datos del usuario actualmente logeado
+  const [usuarioLogeado, setUsuarioLogeado] = useState(null); // null significa no logeado
 
-  // Base URL for your backend API
+  // Hook para la navegación programática
+  const navigate = useNavigate();
+
+  // URL base para tu API backend
   const API_URL = 'http://localhost:5000/api';
 
-  // Function to fetch all users from the backend
+  // Función para obtener todos los usuarios del backend
   const fetchUsuarios = async () => {
     try {
       const response = await fetch(`${API_URL}/usuarios`);
@@ -38,21 +49,21 @@ function App() {
       const data = await response.json();
       setUsuarios(data);
     } catch (error) {
-      console.error("Error fetching users:", error);
-      setMensaje('Error loading users.');
+      console.error("Error al obtener usuarios:", error);
+      setMensaje('Error al cargar usuarios.');
     }
   };
 
-  // Handler for changes in the registration form fields
+  // Manejador para cambios en los campos del formulario de registro
   const handleRegistroChange = (e) => {
     const { name, value } = e.target;
     setRegistroForm({ ...registroForm, [name]: value });
   };
 
-  // Handler for submitting the registration form
+  // Manejador para enviar el formulario de registro
   const handleRegistroSubmit = async (e) => {
     e.preventDefault();
-    setMensaje(''); // Clear previous messages
+    setMensaje(''); // Limpiar mensajes anteriores
     try {
       const response = await fetch(`${API_URL}/usuarios/registro`, {
         method: 'POST',
@@ -68,26 +79,26 @@ function App() {
         throw new Error(data.error || `HTTP error! Status: ${response.status}`);
       }
 
-      setMensaje(`User "${data.usuario.nombre}" registered successfully!`);
-      // Clear the registration form
+      setMensaje(`Usuario "${data.usuario.nombre}" registrado exitosamente!`);
+      // Limpiar el formulario de registro
       setRegistroForm({ nombre: '', apellido: '', email: '', contrasena: '', rol: 'estudiante', telefono: '' });
-      fetchUsuarios(); // Reload the user list
+      fetchUsuarios(); // Recargar la lista de usuarios
     } catch (error) {
-      console.error("Error registering user:", error);
-      setMensaje(`Error registering user: ${error.message}`);
+      console.error("Error al registrar usuario:", error);
+      setMensaje(`Error al registrar usuario: ${error.message}`);
     }
   };
 
-  // Handler for changes in the login form fields
+  // Manejador para cambios en los campos del formulario de inicio de sesión
   const handleLoginChange = (e) => {
     const { name, value } = e.target;
     setLoginForm({ ...loginForm, [name]: value });
   };
 
-  // Handler for submitting the login form
+  // Manejador para enviar el formulario de inicio de sesión
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    setMensaje(''); // Clear previous messages
+    setMensaje(''); // Limpiar mensajes anteriores
     try {
       const response = await fetch(`${API_URL}/usuarios/login`, {
         method: 'POST',
@@ -103,217 +114,122 @@ function App() {
         throw new Error(data.error || `HTTP error! Status: ${response.status}`);
       }
 
-      setMensaje(`Welcome, ${data.usuario.nombre}! You have logged in as ${data.usuario.rol}.`);
-      setUsuarioLogeado(data.usuario); // Store the logged-in user
-      setLoginForm({ email: '', contrasena: '' }); // Clear the login form
+      setMensaje(`Bienvenido, ${data.usuario.nombre}! Has iniciado sesión como ${data.usuario.rol}.`);
+      setUsuarioLogeado(data.usuario); // Almacenar el usuario logeado
+      setLoginForm({ email: '', contrasena: '' }); // Limpiar el formulario de inicio de sesión
+      navigate('/dashboard'); // Redirigir al dashboard después del login
     } catch (error) {
-      console.error("Error during login:", error);
-      setMensaje(`Error during login: ${error.message}`);
+      console.error("Error durante el inicio de sesión:", error);
+      setMensaje(`Error durante el inicio de sesión: ${error.message}`);
     }
   };
 
-  // Function to handle user logout
+  // Función para manejar el cierre de sesión
   const handleLogout = () => {
-    setUsuarioLogeado(null);
-    setMensaje('You have logged out.');
+    setUsuarioLogeado(null); // Limpiar el usuario logeado
+    setMensaje('Has cerrado sesión.');
+    navigate('/'); // Redirigir a la página principal (login/registro) después de cerrar sesión
   };
 
-  // Load users when the component mounts
+  // Cargar usuarios cuando el componente se monta (solo una vez)
   useEffect(() => {
     fetchUsuarios();
-  }, []); // Empty dependency array ensures it runs only once on mount
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100 p-8 flex flex-col items-center justify-center font-inter">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl">
-        <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
-          PUCE Transport App
-        </h1>
+      {/* Routes es el contenedor para todas tus rutas */}
+      <Routes>
+        {/* Ruta para la página de autenticación (Login/Registro) */}
+        {/* Esta ruta es pública, no requiere autenticación */}
+        <Route
+          path="/"
+          element={
+            <AuthPage
+              registroForm={registroForm}
+              handleRegistroChange={handleRegistroChange}
+              handleRegistroSubmit={handleRegistroSubmit}
+              loginForm={loginForm}
+              handleLoginChange={handleLoginChange}
+              handleLoginSubmit={handleLoginSubmit}
+              mensaje={mensaje}
+            />
+          }
+        />
 
-        {/* Message display area */}
-        {mensaje && (
-          <div className="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative mb-6" role="alert">
-            <span className="block sm:inline">{mensaje}</span>
-          </div>
-        )}
+        {/* Rutas Protegidas: Envueltas por ProtectedRoute */}
+        {/* Solo accesibles si hay un usuario logeado */}
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute usuarioLogeado={usuarioLogeado}>
+              <Dashboard usuarioLogeado={usuarioLogeado} handleLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/horarios"
+          element={
+            <ProtectedRoute usuarioLogeado={usuarioLogeado}>
+              <Horarios />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reserva"
+          element={
+            <ProtectedRoute usuarioLogeado={usuarioLogeado}>
+              <Reserva />
+            </ProtectedRoute>
+          }
+        />
+        {/* Ruta protegida y solo para administradores */}
+        <Route
+          path="/usuarios-registrados"
+          element={
+            <ProtectedRoute usuarioLogeado={usuarioLogeado} allowedRoles={['admin']}>
+              <UsuariosRegistrados usuarios={usuarios} />
+            </ProtectedRoute>
+          }
+        />
+        {/* Ruta protegida y solo para conductores */}
+        <Route
+          path="/mis-rutas"
+          element={
+            <ProtectedRoute usuarioLogeado={usuarioLogeado} allowedRoles={['conductor']}>
+              <div className="p-6 bg-white rounded-lg shadow-md">
+                <h2 className="text-2xl font-semibold text-gray-800 mb-4">Mis Rutas (Conductor)</h2>
+                <p className="text-gray-600">Aquí el conductor puede ver y gestionar sus rutas asignadas.</p>
+              </div>
+            </ProtectedRoute>
+          }
+        />
 
-        {/* Conditional rendering based on login status */}
-        {usuarioLogeado ? (
-          <div className="mb-8 p-4 bg-green-50 rounded-md border border-green-200">
-            <h2 className="text-xl font-semibold text-green-800">Session Started</h2>
-            <p className="text-gray-700">User: {usuarioLogeado.nombre} {usuarioLogeado.apellido} ({usuarioLogeado.email})</p>
-            <p className="text-gray-700">Role: {usuarioLogeado.rol}</p>
-            <button
-              onClick={handleLogout}
-              className="mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition duration-300 ease-in-out"
-            >
-              Logout
-            </button>
-          </div>
-        ) : (
-          <>
-            {/* User Registration Form */}
-            <h2 className="text-2xl font-semibold text-gray-700 mb-4 text-center">
-              User Registration
-            </h2>
-            <form onSubmit={handleRegistroSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 p-6 border border-gray-200 rounded-md shadow-sm">
-              <div>
-                <label htmlFor="registro-nombre" className="block text-sm font-medium text-gray-700">Name:</label>
-                <input
-                  type="text"
-                  id="registro-nombre"
-                  name="nombre"
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  value={registroForm.nombre}
-                  onChange={handleRegistroChange}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="registro-apellido" className="block text-sm font-medium text-gray-700">Last Name:</label>
-                <input
-                  type="text"
-                  id="registro-apellido"
-                  name="apellido"
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  value={registroForm.apellido}
-                  onChange={handleRegistroChange}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="registro-email" className="block text-sm font-medium text-gray-700">Email:</label>
-                <input
-                  type="email"
-                  id="registro-email"
-                  name="email"
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  value={registroForm.email}
-                  onChange={handleRegistroChange}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="registro-contrasena" className="block text-sm font-medium text-gray-700">Password:</label>
-                <input
-                  type="password"
-                  id="registro-contrasena"
-                  name="contrasena"
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  value={registroForm.contrasena}
-                  onChange={handleRegistroChange}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="registro-rol" className="block text-sm font-medium text-gray-700">Role:</label>
-                <select
-                  id="registro-rol"
-                  name="rol"
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  value={registroForm.rol}
-                  onChange={handleRegistroChange}
-                >
-                  <option value="estudiante">Student</option>
-                  <option value="conductor">Driver</option>
-                  <option value="admin">Admin</option>
-                </select>
-              </div>
-              <div>
-                <label htmlFor="registro-telefono" className="block text-sm font-medium text-gray-700">Phone (Optional):</label>
-                <input
-                  type="text"
-                  id="registro-telefono"
-                  name="telefono"
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                  value={registroForm.telefono}
-                  onChange={handleRegistroChange}
-                />
-              </div>
-              <div className="md:col-span-2">
-                <button
-                  type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition duration-300 ease-in-out"
-                >
-                  Register User
-                </button>
-              </div>
-            </form>
-
-            {/* User Login Form */}
-            <h2 className="text-2xl font-semibold text-gray-700 mb-4 text-center">
-              User Login
-            </h2>
-            <form onSubmit={handleLoginSubmit} className="space-y-4 mb-8 p-6 border border-gray-200 rounded-md shadow-sm">
-              <div>
-                <label htmlFor="login-email" className="block text-sm font-medium text-gray-700">Email:</label>
-                <input
-                  type="email"
-                  id="login-email"
-                  name="email"
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm"
-                  value={loginForm.email}
-                  onChange={handleLoginChange}
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="login-contrasena" className="block text-sm font-medium text-gray-700">Password:</label>
-                <input
-                  type="password"
-                  id="login-contrasena"
-                  name="contrasena"
-                  className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm"
-                  value={loginForm.contrasena}
-                  onChange={handleLoginChange}
-                  required
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md shadow-md transition duration-300 ease-in-out"
-              >
-                Login
-              </button>
-            </form>
-          </>
-        )}
-
-        {/* List of Registered Users */}
-        <h2 className="text-2xl font-semibold text-gray-700 mt-8 mb-4 text-center">
-          List of Registered Users
-        </h2>
-        {usuarios.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200 rounded-lg shadow-md">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">ID</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg">Phone</th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {usuarios.map((usuario) => (
-                  <tr key={usuario.id}>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{usuario.id}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{usuario.nombre} {usuario.apellido}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{usuario.email}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{usuario.rol}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{usuario.telefono || 'N/A'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <p className="text-gray-600 text-center">No registered users yet.</p>
-        )}
-      </div>
+        {/* Ruta Catch-all para URLs no definidas (Página 404) */}
+        <Route
+          path="*"
+          element={
+            <div className="text-center p-8 bg-white rounded-lg shadow-lg">
+              <h2 className="text-3xl font-bold text-red-600">404 - Página no encontrada</h2>
+              <p className="mt-4 text-gray-700">Lo sentimos, la página que buscas no existe.</p>
+              {/* Enlace para volver al dashboard si está logeado, o a la página de inicio si no */}
+              <Link to={usuarioLogeado ? "/dashboard" : "/"} className="mt-6 inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md">
+                Volver al Inicio
+              </Link>
+            </div>
+          }
+        />
+      </Routes>
     </div>
   );
 }
 
-export default App;
+// Envuelve el componente App con Router en main.jsx
+// Se exporta como AppWrapper para ser importado en main.jsx
+export default function AppWrapper() {
+  return (
+    <Router>
+      <App />
+    </Router>
+  );
+}
