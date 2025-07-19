@@ -14,16 +14,16 @@ import ProtectedRoute from './components/ProtectedRoute';
 function App() {
   // Estado para la lista de usuarios obtenida del backend
   const [usuarios, setUsuarios] = useState([]);
-  // Estado para los campos del formulario de registro
+  // Estado para los campos del formulario de registro (Alineado con tu esquema de 'usuarios')
   const [registroForm, setRegistroForm] = useState({
     nombre: '',
     apellido: '',
     email: '',
     contrasena: '',
-    rol: 'estudiante', // Rol por defecto
+    rol: 'estudiante', // Valor por defecto según tu esquema
     telefono: ''
   });
-  // Estado para los campos del formulario de inicio de sesión
+  // Estado para los campos del formulario de inicio de sesión (Alineado con tu esquema de 'usuarios')
   const [loginForm, setLoginForm] = useState({
     email: '',
     contrasena: ''
@@ -80,8 +80,8 @@ function App() {
       }
 
       setMensaje(`Usuario "${data.usuario.nombre}" registrado exitosamente!`);
-      // Limpiar el formulario de registro
-      setRegistroForm({ nombre: '', apellido: '', email: '', contrasena: '', rol: 'estudiante', telefono: '' });
+      // Limpiar el formulario de registro (Alineado con tu esquema)
+      setRegistroForm({ nombre: '', apellido: '', email: '', contrasena: '', rol: 'estudiante', telefono: '' }); 
       fetchUsuarios(); // Recargar la lista de usuarios
     } catch (error) {
       console.error("Error al registrar usuario:", error);
@@ -114,9 +114,10 @@ function App() {
         throw new Error(data.error || `HTTP error! Status: ${response.status}`);
       }
 
-      setMensaje(`Bienvenido, ${data.usuario.nombre}! Has iniciado sesión como ${data.usuario.rol}.`);
+      setMensaje(`Bienvenido, ${data.usuario.nombre}! Has iniciado sesión como ${data.usuario.rol}.`); 
       setUsuarioLogeado(data.usuario); // Almacenar el usuario logeado
-      setLoginForm({ email: '', contrasena: '' }); // Limpiar el formulario de inicio de sesión
+      // Limpiar el formulario de inicio de sesión (Alineado con tu esquema)
+      setLoginForm({ email: '', contrasena: '' }); 
       navigate('/dashboard'); // Redirigir al dashboard después del login
     } catch (error) {
       console.error("Error durante el inicio de sesión:", error);
@@ -179,7 +180,8 @@ function App() {
           path="/reserva"
           element={
             <ProtectedRoute usuarioLogeado={usuarioLogeado}>
-              <Reserva />
+              {/* Se pasa la prop usuarioLogeado al componente Reserva */}
+              <Reserva usuarioLogeado={usuarioLogeado} />
             </ProtectedRoute>
           }
         />
