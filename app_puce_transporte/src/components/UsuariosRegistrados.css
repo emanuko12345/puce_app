@@ -1,0 +1,53 @@
+.contenedor {
+  padding: 24px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.titulo {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 16px;
+}
+
+.tabla-contenedor {
+  overflow-x: auto;
+}
+
+.tabla-usuarios {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tabla-usuarios thead {
+  background-color: #f9fafb;
+}
+
+.tabla-usuarios th,
+.tabla-usuarios td {
+  padding: 12px 24px;
+  text-align: left;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.tabla-usuarios th {
+  font-weight: 500;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+
+.tabla-usuarios td {
+  color: #374151;
+}
+
+.mensaje-vacio {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.95rem;
+}

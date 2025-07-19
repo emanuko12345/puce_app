@@ -1,0 +1,111 @@
+.dashboard-container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  max-width: 64rem; /* max-w-4xl ~ 64rem */
+  margin: 0 auto;
+}
+
+.dashboard-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2d3748; /* text-gray-800 */
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.session-info {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: #f0fff4; /* bg-green-50 */
+  border: 1px solid #c6f6d5; /* border-green-200 */
+  border-radius: 0.375rem;
+  color: #22543d; /* text-green-800 */
+}
+
+.session-info p {
+  color: #4a5568; /* text-gray-700 */
+}
+
+.logout-button {
+  margin-top: 1rem;
+  background-color: #e53e3e; /* bg-red-600 */
+  color: white;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.logout-button:hover {
+  background-color: #c53030; /* hover:bg-red-700 */
+}
+
+.nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.nav-link {
+  background-color: #6b46c1; /* bg-purple-600 */
+  color: white;
+  font-weight: 700;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+  background-color: #553c9a; /* hover:bg-purple-700 */
+}
+
+/* Colores para roles específicos */
+.nav-link.indigo {
+  background-color: #5a67d8;
+}
+
+.nav-link.indigo:hover {
+  background-color: #434190;
+}
+
+.nav-link.orange {
+  background-color: #ed8936;
+}
+
+.nav-link.orange:hover {
+  background-color: #dd6b20;
+}
+
+.nav-link.yellow {
+  background-color: #d69e2e;
+}
+
+.nav-link.yellow:hover {
+  background-color: #b7791f;
+}
+
+.system-info {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: #f7fafc; /* bg-gray-50 */
+  border: 1px solid #e2e8f0; /* border-gray-200 */
+  border-radius: 0.375rem;
+  color: #4a5568; /* text-gray-600 */
+}
+
+.system-info h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 1rem;
+}
