@@ -1,11 +1,15 @@
-/* Estilo general para el contenedor principal */
+/* app.css */
+
+/* Estilo general para el contenedor principal de la aplicación (ej. el #root de React/Vite) */
 #root {
   max-width: 1280px;
-  margin: 0 auto;
+  margin: 0 auto; /* Centra el contenedor en la página */
   padding: 2rem;
   text-align: center;
-  background: linear-gradient(to right, #f0f8ff, #e6e6fa); /* Fondo degradado suave */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #d40707, #e5065c); /* Fondo degradado suave */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente específica para el contenido del root */
+  /* NOTA: El #root no necesita height: 100% si el body ya está centrado y el root es solo para el contenido.
+     Su altura será determinada por su contenido. */
 }
 
 /* Estilos para el logo */
@@ -16,14 +20,14 @@
   will-change: filter, transform;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #ff6f91); /* Rosa vibrante */
+  filter: drop-shadow(0 0 2em hsl(346, 92%, 52%)); /* Rosa vibrante */
   transform: scale(1.1); /* Efecto de zoom */
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #00f0ff); /* Azul neón */
+  filter: drop-shadow(0 0 2em #eb096b); /* Azul neón */
 }
 
-/* Animación de zoom suave */
+/* Animación de zoom suave para el logo */
 @keyframes logo-zoom {
   0%, 100% {
     transform: scale(1);
@@ -35,15 +39,15 @@
 
 /* Solo si no se prefiere reducir movimiento, aplicar animación */
 @media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
+  a:nth-of-type(2) .logo { /* Esto asume una estructura específica de HTML para el logo */
     animation: logo-zoom infinite 4s ease-in-out;
   }
 }
 
-/* Tarjetas de contenido */
+/* Tarjetas de contenido (si las usas en tu aplicación) */
 .card {
   padding: 2em;
-  background-color: #ffffffdd;
+  background-color: #e10505dd;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin-top: 1rem;
@@ -55,19 +59,19 @@
 
 /* Estilo para texto informativo */
 .read-the-docs {
-  color: #666;
+  color: #ee1010;
   font-style: italic;
   margin-top: 1rem;
 }
 
 /* Estilo uniforme para todos los labels */
 label {
-  display: block;                  /* Cada label ocupa su propia línea */
-  text-align: left;                /* Alineación a la izquierda */
-  font-size: 1rem;                 /* Tamaño uniforme */
-  font-weight: 600;                /* Más visibilidad */
-  color: #333;                     /* Color sobrio */
-  margin-bottom: 0.5rem;           /* Espacio debajo */
-  margin-top: 1rem;                /* Espacio arriba */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: block; /* Cada label ocupa su propia línea */
+  text-align: left; /* Alineación a la izquierda */
+  font-size: 1rem; /* Tamaño uniforme */
+  font-weight: 600; /* Más visibilidad */
+  color: #333; /* Color sobrio */
+  margin-bottom: 0.5rem; /* Espacio debajo */
+  margin-top: 1rem; /* Espacio arriba */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente específica para labels */
 }

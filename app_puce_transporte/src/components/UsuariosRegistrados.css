@@ -1,33 +1,45 @@
+/* Contenedor general de la tabla */
 .contenedor {
+  width: 100%;
+  max-width: 1200px; /* Puedes ajustar este valor */
+  margin: 2rem auto;
   padding: 24px;
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Inter', sans-serif;
 }
 
+/* Título principal */
 .titulo {
   font-size: 1.5rem;
   font-weight: 600;
   color: #1f2937;
   margin-bottom: 16px;
+  text-align: center;
 }
 
+/* Contenedor para hacer la tabla responsive */
 .tabla-contenedor {
+  width: 100%;
   overflow-x: auto;
+  border-radius: 12px;
 }
 
+/* Tabla en sí */
 .tabla-usuarios {
   width: 100%;
   border-collapse: collapse;
   border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  overflow: hidden;
+  min-width: 600px; /* útil para scroll horizontal */
 }
 
+/* Cabecera */
 .tabla-usuarios thead {
   background-color: #f9fafb;
 }
 
+/* Celdas (encabezado y datos) */
 .tabla-usuarios th,
 .tabla-usuarios td {
   padding: 12px 24px;
@@ -40,14 +52,33 @@
   font-weight: 500;
   color: #6b7280;
   text-transform: uppercase;
+  background-color: #f3f4f6;
 }
 
 .tabla-usuarios td {
   color: #374151;
 }
 
+/* Mensaje para cuando no hay usuarios */
 .mensaje-vacio {
   text-align: center;
   color: #6b7280;
   font-size: 0.95rem;
+  padding: 1rem;
+}
+
+/* Estilos adicionales para responsividad en pantallas pequeñas */
+@media (max-width: 768px) {
+  .contenedor {
+    padding: 16px;
+  }
+
+  .tabla-usuarios th,
+  .tabla-usuarios td {
+    padding: 10px 12px;
+  }
+
+  .titulo {
+    font-size: 1.25rem;
+  }
 }

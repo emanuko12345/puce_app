@@ -1,11 +1,22 @@
-import React from 'react';
-import './AuthPage.css';
+// src/components/AuthPage.jsx
+import React, { useEffect } from 'react'; // <-- ¡Asegúrate de importar useEffect!
+import './AuthPage.css'; // Importa los estilos específicos de esta página
 
 function AuthPage({
   registroForm, handleRegistroChange, handleRegistroSubmit,
   loginForm, handleLoginChange, handleLoginSubmit,
   mensaje
 }) {
+  useEffect(() => {
+    // Cuando el componente se monta, añade la clase al body
+    document.body.classList.add('auth-page-background');
+
+    // Cuando el componente se desmonta, quita la clase del body
+    return () => {
+      document.body.classList.remove('auth-page-background');
+    };
+  }, []); // El array vacío asegura que esto se ejecute solo una vez al montar y una vez al desmontar
+
   return (
     <div className="auth-container">
       <h1 className="auth-title">PUCE Transport App</h1>
