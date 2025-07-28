@@ -4,12 +4,13 @@ import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react
 import './App.css'; // Archivo para estilos básicos o generales
 
 // Importa los componentes
-import AuthPage from './components/AuthPage';
-import Dashboard from './components/Dashboard';
-import Horarios from './components/Horarios';
-import Reserva from './components/Reserva';
-import UsuariosRegistrados from './components/UsuariosRegistrados';
-import ProtectedRoute from './components/ProtectedRoute';
+import AuthPage from './components/AuthPage.jsx';
+import Dashboard from './components/Dashboard.jsx';
+import Horarios from './components/Horarios.jsx';
+import Reserva from './components/Reserva.jsx';
+import Reservas from './components/Reservas1.jsx'; // Importa el nuevo componente Reservas
+import UsuariosRegistrados from './components/UsuariosRegistrados.jsx';
+import ProtectedRoute from './components/ProtectedRoute.jsx';
 
 function App() {
   const [usuarios, setUsuarios] = useState([]);
@@ -144,6 +145,14 @@ function App() {
           element={
             <ProtectedRoute usuarioLogeado={usuarioLogeado}>
               <Reserva usuarioLogeado={usuarioLogeado} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/reservas" // Nueva ruta para el componente Reservas
+          element={
+            <ProtectedRoute usuarioLogeado={usuarioLogeado}>
+              <Reservas />
             </ProtectedRoute>
           }
         />

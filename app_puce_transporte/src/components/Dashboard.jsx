@@ -38,6 +38,13 @@ function Dashboard({ usuarioLogeado, handleLogout }) {
               Realizar Reserva
             </Link>
           </li>
+          {/* NUEVO: Enlace para ver las reservas */}
+          <li>
+            <Link to="/reservas" className="nav-link green"> {/* Puedes ajustar la clase CSS si tienes una específica para este */}
+              Ver Mis Reservas
+            </Link>
+          </li>
+          {/* FIN NUEVO */}
           {usuarioLogeado.rol === 'admin' && (
             <li>
               <Link to="/usuarios-registrados" className="nav-link orange">
