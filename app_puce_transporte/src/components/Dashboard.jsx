@@ -1,9 +1,25 @@
 // src/components/Dashboard.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Dashboard.css';
+import ProfilePictureUploader from './ProfilePictureUploader.jsx';
 
-function Dashboard({ usuarioLogeado, handleLogout }) {
+function Dashboard({ usuarioLogeado, handleLogout, updateUsuarioLogeadoProfilePic }) {
+  // Estado para la URL de la foto de perfil. Inicializa con la que viene del usuarioLogeado
+  const [profileImageUrl, setProfileImageUrl] = useState(usuarioLogeado?.foto_perfil_url || null);
+
+  // Efecto para actualizar profileImageUrl cuando usuarioLogeado.foto_perfil_url cambie
+  useEffect(() => {
+    setProfileImageUrl(usuarioLogeado?.foto_perfil_url || null);
+  }, [usuarioLogeado?.foto_perfil_url]); // Se ejecuta cuando la URL de la foto de perfil del usuario logeado cambia
+
+  // Callback para actualizar la URL de la foto de perfil después de una subida exitosa
+  const handleProfileUploadSuccess = (newImageUrl) => {
+    setProfileImageUrl(newImageUrl);
+    // Llama a la función pasada desde App.jsx para actualizar el estado global
+    updateUsuarioLogeadoProfilePic(newImageUrl);
+  };
+
   if (!usuarioLogeado) {
     return <p>Por favor, inicia sesión para ver el Dashboard.</p>;
   }
@@ -16,6 +32,7 @@ function Dashboard({ usuarioLogeado, handleLogout }) {
 
       <div className="session-info">
         <h2>Sesión Iniciada</h2>
+        {/* Se ha eliminado la visualización de la foto de perfil de esta sección */}
         <p>Usuario: {usuarioLogeado.nombre} {usuarioLogeado.apellido} ({usuarioLogeado.email})</p>
         <p>Rol: {usuarioLogeado.rol}</p>
         <button
@@ -25,6 +42,15 @@ function Dashboard({ usuarioLogeado, handleLogout }) {
           Cerrar Sesión
         </button>
       </div>
+
+      {/* Incluye el componente ProfilePictureUploader, que es donde se gestiona y visualiza la foto */}
+      {usuarioLogeado && (
+        <ProfilePictureUploader
+          userId={usuarioLogeado.id}
+          currentProfilePic={profileImageUrl}
+          onUploadSuccess={handleProfileUploadSuccess}
+        />
+      )}
 
       <nav>
         <ul className="nav-list">
@@ -38,13 +64,11 @@ function Dashboard({ usuarioLogeado, handleLogout }) {
               Realizar Reserva
             </Link>
           </li>
-          {/* NUEVO: Enlace para ver las reservas */}
           <li>
-            <Link to="/reservas" className="nav-link green"> {/* Puedes ajustar la clase CSS si tienes una específica para este */}
+            <Link to="/reservas" className="nav-link green">
               Ver Mis Reservas
             </Link>
           </li>
-          {/* FIN NUEVO */}
           {usuarioLogeado.rol === 'admin' && (
             <li>
               <Link to="/usuarios-registrados" className="nav-link orange">

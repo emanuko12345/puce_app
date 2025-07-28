@@ -8,7 +8,7 @@ import AuthPage from './components/AuthPage.jsx';
 import Dashboard from './components/Dashboard.jsx';
 import Horarios from './components/Horarios.jsx';
 import Reserva from './components/Reserva.jsx';
-import Reservas from './components/Reservas1.jsx'; // Importa el nuevo componente Reservas
+import Reservas from './components/Reservas1.jsx'; // Importa el nuevo componente Reservas (ahora Reservas1)
 import UsuariosRegistrados from './components/UsuariosRegistrados.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
@@ -27,6 +27,7 @@ function App() {
     contrasena: ''
   });
   const [mensaje, setMensaje] = useState('');
+  // El estado usuarioLogeado se inicializa con null
   const [usuarioLogeado, setUsuarioLogeado] = useState(null);
 
   const navigate = useNavigate();
@@ -88,6 +89,7 @@ function App() {
       if (!response.ok) throw new Error(data.error || `HTTP error! Status: ${response.status}`);
 
       setMensaje(`Bienvenido, ${data.usuario.nombre}! Has iniciado sesión como ${data.usuario.rol}.`);
+      // Establece el usuario logeado con todos sus datos, incluyendo foto_perfil_url
       setUsuarioLogeado(data.usuario);
       setLoginForm({ email: '', contrasena: '' });
       navigate('/dashboard');
@@ -101,6 +103,17 @@ function App() {
     setUsuarioLogeado(null);
     setMensaje('Has cerrado sesión.');
     navigate('/');
+  };
+
+  // NUEVA FUNCIÓN: Para actualizar el usuarioLogeado en App.jsx con la nueva URL de la foto de perfil
+  const updateUsuarioLogeadoProfilePic = (newImageUrl) => {
+    // Solo actualiza si hay un usuario logeado
+    if (usuarioLogeado) {
+      setUsuarioLogeado(prevUser => ({
+        ...prevUser, // Mantiene todas las propiedades del usuario actual
+        foto_perfil_url: newImageUrl, // Actualiza solo la propiedad foto_perfil_url
+      }));
+    }
   };
 
   useEffect(() => {
@@ -128,7 +141,11 @@ function App() {
           path="/dashboard"
           element={
             <ProtectedRoute usuarioLogeado={usuarioLogeado}>
-              <Dashboard usuarioLogeado={usuarioLogeado} handleLogout={handleLogout} />
+              <Dashboard
+                usuarioLogeado={usuarioLogeado}
+                handleLogout={handleLogout}
+                updateUsuarioLogeadoProfilePic={updateUsuarioLogeadoProfilePic} // Pasa la nueva función
+              />
             </ProtectedRoute>
           }
         />
@@ -149,10 +166,10 @@ function App() {
           }
         />
         <Route
-          path="/reservas" // Nueva ruta para el componente Reservas
+          path="/reservas" // Nueva ruta para el componente Reservas1
           element={
             <ProtectedRoute usuarioLogeado={usuarioLogeado}>
-              <Reservas />
+              <Reservas /> {/* Renderiza el componente Reservas1 */}
             </ProtectedRoute>
           }
         />
