@@ -87,10 +87,9 @@ function Dashboard({ usuarioLogeado, handleLogout, updateUsuarioLogeadoProfilePi
       </nav>
 
       <div className="system-info">
-        <h2>Información del Sistema</h2>
-        <p>Desde aquí puedes navegar a las diferentes funcionalidades de la aplicación de transporte de la PUCE.</p>
-      </div>
+        
     </div>
+      </div>
   );
 }
 
