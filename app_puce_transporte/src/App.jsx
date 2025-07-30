@@ -105,6 +105,7 @@ function App() {
     navigate('/');
   };
 
+  // NUEVA FUNCIÓN: Para actualizar el usuarioLogeado en App.jsx con la nueva URL de la foto de perfil
   const updateUsuarioLogeadoProfilePic = (newImageUrl) => {
     // Solo actualiza si hay un usuario logeado
     if (usuarioLogeado) {

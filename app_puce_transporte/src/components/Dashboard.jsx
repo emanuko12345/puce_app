@@ -27,20 +27,13 @@ function Dashboard({ usuarioLogeado, handleLogout, updateUsuarioLogeadoProfilePi
   return (
     <div className="dashboard-container">
       <h1 className="dashboard-title">
-        Bienvenido, {usuarioLogeado.nombre}!
+        Hola Bienvenido, {usuarioLogeado.nombre}!
       </h1>
 
       <div className="session-info">
-        <h2>Sesión Iniciada</h2>
+        
         {/* Se ha eliminado la visualización de la foto de perfil de esta sección */}
-        <p>Usuario: {usuarioLogeado.nombre} {usuarioLogeado.apellido} ({usuarioLogeado.email})</p>
-        <p>Rol: {usuarioLogeado.rol}</p>
-        <button
-          onClick={handleLogout}
-          className="logout-button"
-        >
-          Cerrar Sesión
-        </button>
+        
       </div>
 
       {/* Incluye el componente ProfilePictureUploader, que es donde se gestiona y visualiza la foto */}
@@ -87,9 +80,17 @@ function Dashboard({ usuarioLogeado, handleLogout, updateUsuarioLogeadoProfilePi
       </nav>
 
       <div className="system-info">
-        
-    </div>
+      
+ <button
+          onClick={handleLogout}
+          className="logout-button"
+        >
+          Cerrar Sesión
+        </button>
+
+
       </div>
+    </div>
   );
 }
 
