@@ -1,14 +1,13 @@
-// src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
-import './App.css'; // Archivo para estilos básicos o generales
+import './App.css';
 
-// Importa los componentes
+// Componentes
 import AuthPage from './components/AuthPage.jsx';
 import Dashboard from './components/Dashboard.jsx';
 import Horarios from './components/Horarios.jsx';
 import Reserva from './components/Reserva.jsx';
-import Reservas from './components/Reservas1.jsx'; // Importa el nuevo componente Reservas (ahora Reservas1)
+import Reservas from './components/Reservas1.jsx';
 import UsuariosRegistrados from './components/UsuariosRegistrados.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 
@@ -18,20 +17,19 @@ function App() {
     nombre: '',
     apellido: '',
     email: '',
-    contrasena: '',
+    password: '', // CAMBIADO de "contrasena" a "password"
     rol: 'estudiante',
     telefono: ''
   });
   const [loginForm, setLoginForm] = useState({
     email: '',
-    contrasena: ''
+    password: '' // CAMBIADO de "contrasena" a "password"
   });
   const [mensaje, setMensaje] = useState('');
-  // El estado usuarioLogeado se inicializa con null
   const [usuarioLogeado, setUsuarioLogeado] = useState(null);
 
   const navigate = useNavigate();
-  const API_URL = 'http://localhost:5000/api';
+  const API_URL = 'http://localhost:5050/api';
 
   const fetchUsuarios = async () => {
     try {
@@ -63,7 +61,7 @@ function App() {
       if (!response.ok) throw new Error(data.error || `HTTP error! Status: ${response.status}`);
 
       setMensaje(`Usuario "${data.usuario.nombre}" registrado exitosamente!`);
-      setRegistroForm({ nombre: '', apellido: '', email: '', contrasena: '', rol: 'estudiante', telefono: '' });
+      setRegistroForm({ nombre: '', apellido: '', email: '', password: '', rol: 'estudiante', telefono: '' });
       fetchUsuarios();
     } catch (error) {
       console.error("Error al registrar usuario:", error);
@@ -89,9 +87,8 @@ function App() {
       if (!response.ok) throw new Error(data.error || `HTTP error! Status: ${response.status}`);
 
       setMensaje(`Bienvenido, ${data.usuario.nombre}! Has iniciado sesión como ${data.usuario.rol}.`);
-      // Establece el usuario logeado con todos sus datos, incluyendo foto_perfil_url
       setUsuarioLogeado(data.usuario);
-      setLoginForm({ email: '', contrasena: '' });
+      setLoginForm({ email: '', password: '' });
       navigate('/dashboard');
     } catch (error) {
       console.error("Error durante el inicio de sesión:", error);
@@ -105,13 +102,11 @@ function App() {
     navigate('/');
   };
 
-  // NUEVA FUNCIÓN: Para actualizar el usuarioLogeado en App.jsx con la nueva URL de la foto de perfil
   const updateUsuarioLogeadoProfilePic = (newImageUrl) => {
-    // Solo actualiza si hay un usuario logeado
     if (usuarioLogeado) {
       setUsuarioLogeado(prevUser => ({
-        ...prevUser, // Mantiene todas las propiedades del usuario actual
-        foto_perfil_url: newImageUrl, // Actualiza solo la propiedad foto_perfil_url
+        ...prevUser,
+        foto_perfil_url: newImageUrl,
       }));
     }
   };
@@ -144,7 +139,7 @@ function App() {
               <Dashboard
                 usuarioLogeado={usuarioLogeado}
                 handleLogout={handleLogout}
-                updateUsuarioLogeadoProfilePic={updateUsuarioLogeadoProfilePic} // Pasa la nueva función
+                updateUsuarioLogeadoProfilePic={updateUsuarioLogeadoProfilePic}
               />
             </ProtectedRoute>
           }
@@ -166,10 +161,10 @@ function App() {
           }
         />
         <Route
-          path="/reservas" // Nueva ruta para el componente Reservas1
+          path="/reservas"
           element={
             <ProtectedRoute usuarioLogeado={usuarioLogeado}>
-              <Reservas /> {/* Renderiza el componente Reservas1 */}
+              <Reservas />
             </ProtectedRoute>
           }
         />

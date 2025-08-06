@@ -70,7 +70,7 @@ function AuthPage({
           <input
             type="password"
             id="registro-contrasena"
-            name="contrasena"
+            name="password"
             className="auth-input"
             value={registroForm.contrasena}
             onChange={handleRegistroChange}
@@ -128,7 +128,7 @@ function AuthPage({
           <input
             type="password"
             id="login-contrasena"
-            name="contrasena"
+            name="password"
             className="auth-input"
             value={loginForm.contrasena}
             onChange={handleLoginChange}
