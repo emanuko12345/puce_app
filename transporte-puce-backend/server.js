@@ -100,26 +100,24 @@ app.get('/api/usuarios', async (req, res) => {
 
 // Ruta: Registrar un nuevo usuario (Alineado con tu esquema de 'usuarios')
 app.post('/api/usuarios/registro', async (req, res) => {
-    const { nombre, apellido, email, contrasena, rol, telefono } = req.body;
+    const { nombre, apellido, email, password, rol, telefono } = req.body;
 
-    if (!nombre || !apellido || !email || !contrasena) {
+    if (!nombre || !apellido || !email || !password) {
         return res.status(400).json({ error: 'Todos los campos obligatorios (nombre, apellido, email, contraseña) deben ser proporcionados.' });
     }
 
     try {
-        // Verificar si el email ya existe
         const existingUser = await pool.query('SELECT id FROM usuarios WHERE email = $1', [email]);
         if (existingUser.rows.length > 0) {
             return res.status(409).json({ error: 'El email ya está registrado.' });
         }
 
-        // Hashear la contraseña antes de guardarla en la base de datos
         const salt = await bcrypt.genSalt(10);
-        const contrasenaHasheada = await bcrypt.hash(contrasena, salt);
+        const passwordHasheada = await bcrypt.hash(password, salt);
 
         const result = await pool.query(
-            'INSERT INTO usuarios (nombre, apellido, email, contrasena, rol, telefono) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, nombre, apellido, email, rol, telefono, fecha_registro',
-            [nombre, apellido, email, contrasenaHasheada, rol || 'estudiante', telefono] // 'estudiante' como rol por defecto
+            'INSERT INTO usuarios (nombre, apellido, email, password, rol, telefono) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, nombre, apellido, email, rol, telefono, foto_perfil_url',
+            [nombre, apellido, email, passwordHasheada, rol || 'estudiante', telefono]
         );
         res.status(201).json({
             message: 'Usuario registrado exitosamente!',
@@ -131,32 +129,30 @@ app.post('/api/usuarios/registro', async (req, res) => {
     }
 });
 
+
 // Ruta: Inicio de sesión de usuario (Alineado con tu esquema de 'usuarios')
 app.post('/api/usuarios/login', async (req, res) => {
-    const { email, contrasena } = req.body;
+    const { email, password } = req.body;
 
-    if (!email || !contrasena) {
+    if (!email || !password) {
         return res.status(400).json({ error: 'Email y contraseña son requeridos.' });
     }
 
     try {
-        // Buscar el usuario por email e incluir la foto_perfil_url
-        const result = await pool.query('SELECT id, nombre, apellido, email, contrasena, rol, telefono, fecha_registro, foto_perfil_url FROM usuarios WHERE email = $1', [email]);
+        const result = await pool.query('SELECT id, nombre, apellido, email, password, rol, telefono, foto_perfil_url FROM usuarios WHERE email = $1', [email]);
         const user = result.rows[0];
 
         if (!user) {
             return res.status(401).json({ error: 'Credenciales inválidas.' });
         }
 
-        // Comparar la contraseña proporcionada con la contraseña hasheada en la BD
-        const isMatch = await bcrypt.compare(contrasena, user.contrasena);
+        const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
             return res.status(401).json({ error: 'Credenciales inválidas.' });
         }
 
-        // Excluir la contraseña del objeto de respuesta antes de enviarlo al frontend
-        const { contrasena: _, ...userData } = user;
+        const { password: _, ...userData } = user;
 
         res.status(200).json({
             message: 'Inicio de sesión exitoso!',
@@ -168,6 +164,7 @@ app.post('/api/usuarios/login', async (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor durante el inicio de sesión.' });
     }
 });
+
 
 // --- RUTA: Subir foto de perfil para un usuario específico ---
 // 'profilePicture' es el nombre del campo esperado en el FormData del frontend
