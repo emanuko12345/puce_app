@@ -1,16 +1,16 @@
 /* app.css */
 
 /* Estilo general para el contenedor principal de la aplicación (ej. el #root de React/Vite) */
-#root {
+/* Estilo para toda la app excepto la pantalla de bienvenida */
+#root:not(.welcome-root) {
   max-width: 1280px;
-  margin: 0 auto; /* Centra el contenedor en la página */
+  margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  background: linear-gradient(to right, #d40707, #e5065c); /* Fondo degradado suave */
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente específica para el contenido del root */
-  /* NOTA: El #root no necesita height: 100% si el body ya está centrado y el root es solo para el contenido.
-     Su altura será determinada por su contenido. */
+  background: linear-gradient(to right, #d40707, #e5065c);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 
 /* Estilos para el logo */
 .logo {

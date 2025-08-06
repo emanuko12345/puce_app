@@ -10,6 +10,8 @@ import Reserva from './components/Reserva.jsx';
 import Reservas from './components/Reservas1.jsx';
 import UsuariosRegistrados from './components/UsuariosRegistrados.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
+import WelcomeVideo from './components/WelcomeVideo.jsx';
+import SplashCursor from './components/SplashCursor.jsx';
 
 function App() {
   const [usuarios, setUsuarios] = useState([]);
@@ -117,7 +119,9 @@ function App() {
 
   return (
     <div className="app-container">
-      <Routes>
+       <SplashCursor />
+        <Routes>
+        <Route path="/" element={<WelcomeVideo />} />
         <Route
           path="/"
           element={

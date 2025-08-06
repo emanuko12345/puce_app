@@ -1,23 +1,35 @@
-// app_puce/src/main.jsx
+// app_puce_transporte/src/main.jsx
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import AppWrapper from './App.jsx'; // Importa el componente principal de tu aplicación, ahora llamado AppWrapper
+import AppWrapper from './App.jsx';
+import './App.css'; // Asegúrate de importar estilos aquí
 
-
-// ** IMPORTAR ESTILOS GLOBALES AQUÍ **
-// Asumiendo que has movido las reglas esenciales de html/body y #root a app.css
-// (Si app.css contiene los estilos globales, se importa aquí)
-
-// Obtiene el elemento DOM donde se montará la aplicación.
-// ¡Asegúrate de que tu index.html tenga un <div id="root"></div>!
 const rootElement = document.getElementById('root');
 
-// Crea la raíz de React 18
-const root = createRoot(rootElement);
+const applyRootClass = () => {
+  if (window.location.pathname === '/') {
+    rootElement.classList.add('welcome-root');
+  } else {
+    rootElement.classList.remove('welcome-root');
+  }
+};
 
-// Renderiza la aplicación dentro de StrictMode para detectar problemas potenciales durante el desarrollo.
+// Aplica la clase inicial
+applyRootClass();
+
+// Escucha cambios en la ruta (cuando navegas con el botón)
+window.addEventListener('popstate', applyRootClass);
+
+// Para cuando usas pushState (navegación programática como navigate('/login'))
+const originalPushState = history.pushState;
+history.pushState = function (...args) {
+  originalPushState.apply(this, args);
+  window.dispatchEvent(new Event('popstate'));
+};
+
+const root = createRoot(rootElement);
 root.render(
   <StrictMode>
-    <AppWrapper /> {/* Usa el AppWrapper que ya incluye el Router */}
-  </StrictMode>,
+    <AppWrapper />
+  </StrictMode>
 );

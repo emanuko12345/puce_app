@@ -1,0 +1,52 @@
+.wv-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.wv-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.6);
+}
+
+.wv-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #00ffea;
+  z-index: 2;
+  animation: fadeIn 2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -40%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+.wv-title {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 10px #00ffea;
+}
+
+.wv-button {
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  color: #0a0f2a;
+  background: #00ffea;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.wv-button:hover {
+  background: transparent;
+  color: #00ffea;
+  border: 2px solid #00ffea;
+  box-shadow: 0 0 15px #00ffea, 0 0 30px #00ffea;
+}
