@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react
 import './App.css';
 
 // Componentes
-import AuthPage from './components/AuthPage.jsx';
 import Dashboard from './components/Dashboard.jsx';
 import Horarios from './components/Horarios.jsx';
 import Reserva from './components/Reserva.jsx';
@@ -12,6 +11,8 @@ import UsuariosRegistrados from './components/UsuariosRegistrados.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import WelcomeVideo from './components/WelcomeVideo.jsx';
 import SplashCursor from './components/SplashCursor.jsx';
+import LoginPage from './components/LoginPage.jsx';
+import RegistroPage from './components/RegistroPage.jsx';
 
 function App() {
   const [usuarios, setUsuarios] = useState([]);
@@ -19,13 +20,13 @@ function App() {
     nombre: '',
     apellido: '',
     email: '',
-    password: '', // CAMBIADO de "contrasena" a "password"
+    password: '',
     rol: 'estudiante',
     telefono: ''
   });
   const [loginForm, setLoginForm] = useState({
     email: '',
-    password: '' // CAMBIADO de "contrasena" a "password"
+    password: ''
   });
   const [mensaje, setMensaje] = useState('');
   const [usuarioLogeado, setUsuarioLogeado] = useState(null);
@@ -65,6 +66,7 @@ function App() {
       setMensaje(`Usuario "${data.usuario.nombre}" registrado exitosamente!`);
       setRegistroForm({ nombre: '', apellido: '', email: '', password: '', rol: 'estudiante', telefono: '' });
       fetchUsuarios();
+      navigate('/login');
     } catch (error) {
       console.error("Error al registrar usuario:", error);
       setMensaje(`Error al registrar usuario: ${error.message}`);
@@ -119,19 +121,27 @@ function App() {
 
   return (
     <div className="app-container">
-       <SplashCursor />
-        <Routes>
+      <SplashCursor />
+      <Routes>
         <Route path="/" element={<WelcomeVideo />} />
         <Route
-          path="/"
+          path="/login"
           element={
-            <AuthPage
-              registroForm={registroForm}
-              handleRegistroChange={handleRegistroChange}
-              handleRegistroSubmit={handleRegistroSubmit}
+            <LoginPage
               loginForm={loginForm}
               handleLoginChange={handleLoginChange}
               handleLoginSubmit={handleLoginSubmit}
+              mensaje={mensaje}
+            />
+          }
+        />
+        <Route
+          path="/registro"
+          element={
+            <RegistroPage
+              registroForm={registroForm}
+              handleRegistroChange={handleRegistroChange}
+              handleRegistroSubmit={handleRegistroSubmit}
               mensaje={mensaje}
             />
           }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './WelcomeVideo.css';
+import AnimatedPowerButton from './AnimatedPowerButton';
 
 export default function WelcomeVideo() {
   const navigate = useNavigate();
@@ -13,9 +14,7 @@ export default function WelcomeVideo() {
       </video>
       <div className="wv-overlay">
         <h1 className="wv-title">Bienvenido a PUCERIDE </h1>
-        <button className="wv-button" onClick={() => navigate('/login')}>
-          Empezar →
-        </button>
+        <AnimatedPowerButton onClick={()=> navigate('/login')}/>
       </div>
     </div>
   );
