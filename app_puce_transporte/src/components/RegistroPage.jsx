@@ -1,5 +1,5 @@
 import React from 'react';
-import './AuthPage.css';
+import './AnimacionRegistro.css'; // mismo CSS que el contenedor animado
 
 function RegistroPage({
   registroForm,
@@ -8,8 +8,10 @@ function RegistroPage({
   mensaje
 }) {
   return (
-    <div className="auth-container">
-      <h1 className="auth-title">Registro de Usuario</h1>
+    <div className="form-registro">
+      <h2>
+        Registro de {registroForm.rol === "conductor" ? "Conductor" : "Estudiante"}
+      </h2>
 
       {mensaje && (
         <div className="auth-message" role="alert">
@@ -17,85 +19,53 @@ function RegistroPage({
         </div>
       )}
 
-      <form onSubmit={handleRegistroSubmit} className="auth-form auth-grid">
-        <div>
-          <label htmlFor="registro-nombre">Nombre:</label>
-          <input
-            type="text"
-            id="registro-nombre"
-            name="nombre"
-            className="auth-input"
-            value={registroForm.nombre}
-            onChange={handleRegistroChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="registro-apellido">Apellido:</label>
-          <input
-            type="text"
-            id="registro-apellido"
-            name="apellido"
-            className="auth-input"
-            value={registroForm.apellido}
-            onChange={handleRegistroChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="registro-email">Email:</label>
-          <input
-            type="email"
-            id="registro-email"
-            name="email"
-            className="auth-input"
-            value={registroForm.email}
-            onChange={handleRegistroChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="registro-contrasena">Contraseña:</label>
-          <input
-            type="password"
-            id="registro-contrasena"
-            name="password"
-            className="auth-input"
-            value={registroForm.contrasena}
-            onChange={handleRegistroChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="registro-rol">Rol:</label>
-          <select
-            id="registro-rol"
-            name="rol"
-            className="auth-input"
-            value={registroForm.rol}
-            onChange={handleRegistroChange}
-          >
-            <option value="estudiante">Estudiante</option>
-            <option value="conductor">Conductor</option>
-            <option value="admin">Admin</option>
-          </select>
-        </div>
-        <div>
-          <label htmlFor="registro-telefono">Teléfono (Opcional):</label>
-          <input
-            type="text"
-            id="registro-telefono"
-            name="telefono"
-            className="auth-input"
-            value={registroForm.telefono}
-            onChange={handleRegistroChange}
-          />
-        </div>
-        <div className="md:col-span-2">
-          <button type="submit" className="auth-button">
-            Registrar Usuario
-          </button>
-        </div>
+      <form onSubmit={handleRegistroSubmit} className="registro-form">
+        <input
+          type="text"
+          name="nombre"
+          placeholder="Nombre"
+          value={registroForm.nombre}
+          onChange={handleRegistroChange}
+          required
+        />
+        <input
+          type="text"
+          name="apellido"
+          placeholder="Apellido"
+          value={registroForm.apellido}
+          onChange={handleRegistroChange}
+          required
+        />
+        <input
+          type="email"
+          name="email"
+          placeholder="Correo electrónico"
+          value={registroForm.email}
+          onChange={handleRegistroChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Contraseña"
+          value={registroForm.password}
+          onChange={handleRegistroChange}
+          required
+        />
+
+        {/* Teléfono opcional */}
+        <input
+          type="text"
+          name="telefono"
+          placeholder="Teléfono (opcional)"
+          value={registroForm.telefono}
+          onChange={handleRegistroChange}
+        />
+
+        {/* El rol ya viene seleccionado desde RegistroAnimado */}
+        <input type="hidden" name="rol" value={registroForm.rol} />
+
+        <input type="submit" value="Registrar Usuario" />
       </form>
     </div>
   );

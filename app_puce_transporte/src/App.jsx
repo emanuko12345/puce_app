@@ -12,7 +12,7 @@ import ProtectedRoute from './components/ProtectedRoute.jsx';
 import WelcomeVideo from './components/WelcomeVideo.jsx';
 import SplashCursor from './components/SplashCursor.jsx';
 import LoginPage from './components/LoginPage.jsx';
-import RegistroPage from './components/RegistroPage.jsx';
+import RegistroAnimado from './components/RegistroAnimado.jsx'; // ← Componente único con animación y formulario
 
 function App() {
   const [usuarios, setUsuarios] = useState([]);
@@ -138,7 +138,7 @@ function App() {
         <Route
           path="/registro"
           element={
-            <RegistroPage
+            <RegistroAnimado
               registroForm={registroForm}
               handleRegistroChange={handleRegistroChange}
               handleRegistroSubmit={handleRegistroSubmit}

@@ -1,0 +1,180 @@
+/* LoginFancy.css  — versión CSS pura del SCSS que pasaste */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+:root{
+  --bc:#25252b;
+  --light:#ff2770;
+}
+
+*{
+  padding:0;
+  margin:0;
+  box-sizing:border-box;
+  text-decoration:none;
+  list-style:none;
+  font-family:'Poppins', sans-serif;
+}
+
+/* Layout del lienzo del login (no toco el <body> global para no romper otras páginas) */
+.login-canvas{
+  width:100%;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--bc);
+  perspective:500px; /* (Corregí el typo: pespective -> perspective) */
+  padding:24px;
+}
+
+/* Caja principal con borde animado */
+.box{
+  position:relative;
+  overflow:hidden;
+  width:400px;
+  min-height:200px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid #333;
+  border-radius:20px;
+  filter:drop-shadow(0px 15px 50px #000);
+  transition:.5s;
+}
+
+/* Efecto de “barrido” animado */
+.box > span.animate{
+  position:absolute;
+  left:0;
+  top:calc(0 - 2rem);
+  width:30%;
+  height:100%;
+  background:linear-gradient(to top, var(--light), transparent, transparent);
+  filter:drop-shadow(0px 15px 50px var(--light));
+  animation:loginSweep 2s linear infinite;
+  transform-origin:200px 0px;
+}
+.box > span.animate::after{
+  content:'';
+  position:absolute;
+  left:calc(100% + 240px);
+  top:calc(0 - 2rem);
+  width:60%;
+  height:100%;
+  background:linear-gradient(to bottom, var(--light), transparent, transparent);
+  filter:drop-shadow(0px 15px 50px var(--light));
+}
+
+@keyframes loginSweep{
+  0%{ transform:rotate(0deg);}
+  100%{ transform:rotate(360deg);}
+}
+
+.box::after{
+  content:'';
+  position:absolute;
+  inset:4px;
+  background:#2d2d39;
+  border-radius:15px;
+  border:8px solid #25252b;
+}
+
+/* Hover: agranda sutilmente y revela el contenido interna */
+.box:hover{
+  width:450px;
+  min-height:500px;
+}
+
+/* Panel interior “glass” */
+.login{
+  position:absolute;
+  inset:60px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  background:#333;
+  border-radius:20px;
+  border-bottom:2px solid rgba(255,255,255,.2);
+  box-shadow:inset 0 10px 20px #000;
+  transition:.5s;
+  overflow:hidden;
+}
+.login:hover{
+  inset:40px;
+}
+
+.login .login_box{
+  width:70%;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  transform:translateY(120px);
+  transition:.5s;
+}
+.box:hover .login .login_box{
+  transform:translateY(0);
+}
+
+/* Encabezado */
+.login .login_box h2{
+  color:#fff;
+  font-weight:600;
+  font-size:1.5rem;
+  letter-spacing:.3rem;
+  text-align:center;
+}
+.login .login_box h2 i{
+  color:var(--light);
+}
+
+/* Inputs */
+.login .login_box input,
+.login .login_box button,
+.login .login_box select {
+  width:100%;
+  padding:10px 20px;
+  border-radius:30px;
+  border:2px solid #fff;
+  background:transparent;
+  color:#fff;
+  outline:none;
+}
+
+/* Submit */
+.login .login_box input[type="submit"],
+.login .login_box button[type="submit"]{
+  border:none;
+  background:#45f3ff;
+  cursor:pointer;
+  transition:.5s;
+}
+.login .login_box input[type="submit"]:hover,
+.login .login_box button[type="submit"]:hover{
+  box-shadow:0 0 10px #45f3ff, 0 0 60px #45f3ff;
+}
+
+/* Grupo de links */
+.login .login_box .group{
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+}
+.login .login_box .group a{
+  color:#fff;
+}
+.login .login_box .group a:nth-child(2){
+  color:var(--light);
+  font-weight:600;
+}
+
+/* Mensaje (errores / info) */
+.login-msg{
+  width:100%;
+  color:#ffdede;
+  background:rgba(255,0,0,.12);
+  border:1px solid rgba(255,0,0,.35);
+  border-radius:12px;
+  padding:8px 12px;
+  font-size:.9rem;
+}

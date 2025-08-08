@@ -1,0 +1,51 @@
+/* Formulario adaptado */
+.form-registro {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  align-items: center;
+}
+
+.form-registro h2 {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: 0.1rem;
+  text-align: center;
+}
+
+.registro-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+.registro-form input {
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: 2px solid #fff;
+  background: transparent;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.registro-form input:focus {
+  border-color: #45f3ff;
+  box-shadow: 0 0 10px #45f3ff;
+}
+
+.registro-form input[type="submit"] {
+  background: #45f3ff;
+  border: none;
+  cursor: pointer;
+  color: #000;
+  font-weight: bold;
+}
+
+.registro-form input[type="submit"]:hover {
+  box-shadow: 0 0 10px #45f3ff, 0 0 30px #45f3ff;
+}

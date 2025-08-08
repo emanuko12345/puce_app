@@ -1,7 +1,7 @@
-// src/components/LoginPage.jsx
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import './LoginPage.css'; // Asegúrate de tener el CSS actualizado
+import './LoginPage.css'; 
 
 export default function LoginPage({
   loginForm,
