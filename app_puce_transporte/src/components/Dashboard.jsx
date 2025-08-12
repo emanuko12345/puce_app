@@ -71,8 +71,8 @@ function Dashboard({ usuarioLogeado, handleLogout, updateUsuarioLogeadoProfilePi
           )}
           {usuarioLogeado.rol === 'conductor' && (
             <li>
-              <Link to="/mis-rutas" className="nav-link yellow">
-                Mis Rutas
+              <Link to="/crear-viaje" className="nav-link yellow">
+                Registrar Viaje 
               </Link>
             </li>
           )}
@@ -81,7 +81,7 @@ function Dashboard({ usuarioLogeado, handleLogout, updateUsuarioLogeadoProfilePi
 
       <div className="system-info">
       
- <button
+        <button
           onClick={handleLogout}
           className="logout-button"
         >

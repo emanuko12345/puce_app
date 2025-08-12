@@ -287,6 +287,106 @@ app.delete('/api/usuarios/:id/profile-picture', async (req, res) => {
 });
 
 
+// NUEVA RUTA: Obtener todas las rutas
+app.get('/api/rutas', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM rutas ORDER BY id ASC');
+        res.json(result.rows);
+    } catch (err) {
+        console.error('Error al obtener rutas:', err);
+        res.status(500).json({ error: 'Error interno del servidor al obtener rutas.' });
+    }
+});
+
+// RUTA ACTUALIZADA: Crear o encontrar una ruta
+app.post('/api/rutas', async (req, res) => {
+    const { nombre_ruta, origen, destino } = req.body;
+    if (!nombre_ruta || !origen || !destino) {
+        return res.status(400).json({ error: 'Faltan campos obligatorios para la ruta.' });
+    }
+
+    try {
+        // Buscar si la ruta ya existe
+        let result = await pool.query('SELECT id FROM rutas WHERE nombre_ruta = $1 AND origen = $2 AND destino = $3', [nombre_ruta, origen, destino]);
+        if (result.rows.length > 0) {
+            // Si existe, devolver la ruta existente
+            return res.status(200).json({ message: 'Ruta ya existe.', ruta: { id: result.rows[0].id } });
+        }
+
+        // Si no existe, crear una nueva
+        result = await pool.query('INSERT INTO rutas (nombre_ruta, origen, destino) VALUES ($1, $2, $3) RETURNING *', [nombre_ruta, origen, destino]);
+        res.status(201).json({ message: 'Ruta creada exitosamente.', ruta: result.rows[0] });
+
+    } catch (err) {
+        console.error('Error al crear/obtener ruta:', err);
+        res.status(500).json({ error: 'Error interno del servidor al procesar la ruta.' });
+    }
+});
+
+// NUEVA RUTA: Obtener todos los vehículos
+app.get('/api/vehiculos', async (req, res) => {
+    try {
+        const result = await pool.query('SELECT * FROM vehiculos ORDER BY id ASC');
+        res.json(result.rows);
+    } catch (err) {
+        console.error('Error al obtener vehículos:', err);
+        res.status(500).json({ error: 'Error interno del servidor al obtener vehículos.' });
+    }
+});
+
+// RUTA ACTUALIZADA: Crear o encontrar un vehículo
+app.post('/api/vehiculos', async (req, res) => {
+    const { marca, modelo, placa, capacidad } = req.body;
+    if (!marca || !modelo || !placa || !capacidad) {
+        return res.status(400).json({ error: 'Faltan campos obligatorios para el vehículo.' });
+    }
+
+    try {
+        // Buscar si el vehículo ya existe por su placa
+        let result = await pool.query('SELECT id FROM vehiculos WHERE placa = $1', [placa]);
+        if (result.rows.length > 0) {
+            // Si existe, devolver el vehículo existente
+            return res.status(200).json({ message: 'Vehículo ya existe.', vehiculo: { id: result.rows[0].id } });
+        }
+
+        // Si no existe, crear uno nuevo
+        result = await pool.query('INSERT INTO vehiculos (marca, modelo, placa, capacidad) VALUES ($1, $2, $3, $4) RETURNING *', [marca, modelo, placa, capacidad]);
+        res.status(201).json({ message: 'Vehículo creado exitosamente.', vehiculo: result.rows[0] });
+
+    } catch (err) {
+        console.error('Error al crear/obtener vehículo:', err);
+        res.status(500).json({ error: 'Error interno del servidor al procesar el vehículo.' });
+    }
+});
+
+// NUEVA RUTA: Crear un nuevo viaje
+app.post('/api/viajes', async (req, res) => {
+    const { ruta_id, vehiculo_id, conductor_id, fecha_salida, hora_salida, hora_llegada_estimada, precio, asientos_disponibles } = req.body;
+
+    // Validación básica de los datos de entrada
+    if (!ruta_id || !vehiculo_id || !conductor_id || !fecha_salida || !hora_salida || !precio || !asientos_disponibles) {
+        return res.status(400).json({ error: 'Todos los campos obligatorios para crear un viaje deben ser proporcionados.' });
+    }
+
+    try {
+        // Asumiendo que `viajes` es una tabla existente
+        const result = await pool.query(
+            'INSERT INTO viajes (ruta_id, vehiculo_id, conductor_id, fecha_salida, hora_salida, hora_llegada_estimada, precio, asientos_disponibles) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+            [ruta_id, vehiculo_id, conductor_id, fecha_salida, hora_salida, hora_llegada_estimada, precio, asientos_disponibles]
+        );
+
+        res.status(201).json({
+            message: 'Viaje creado exitosamente!',
+            viaje: result.rows[0]
+        });
+
+    } catch (err) {
+        console.error('Error al crear el viaje:', err);
+        res.status(500).json({ error: 'Error interno del servidor al crear el viaje.' });
+    }
+});
+
+
 app.get('/api/viajes', async (req, res) => {
     try {
         const result = await pool.query(`
@@ -321,8 +421,7 @@ app.get('/api/viajes', async (req, res) => {
                 v.asientos_disponibles > 0
             ORDER BY
                 v.fecha_salida ASC, v.hora_salida ASC
-        `);
-        res.json(result.rows);
+        `);        res.json(result.rows);
     } catch (err) {
         console.error('Error al obtener viajes:', err);
         res.status(500).json({ error: 'Error interno del servidor al obtener viajes.' });
@@ -430,8 +529,7 @@ app.get('/api/reservas', async (req, res) => {
                 usuarios cond ON v.conductor_id = cond.id AND cond.rol = 'conductor'
             ORDER BY
                 r.fecha_reserva DESC
-        `);
-        res.json(result.rows);
+        `);        res.json(result.rows);
     } catch (err) {
         console.error('Error al obtener reservas:', err);
         res.status(500).json({ error: 'Error interno del servidor al obtener reservas.' });
