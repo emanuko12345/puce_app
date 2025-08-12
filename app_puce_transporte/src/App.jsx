@@ -11,6 +11,7 @@ import Reserva from './components/Reserva.jsx';
 import Reservas from './components/Reservas1.jsx'; // Importa el nuevo componente Reservas (ahora Reservas1)
 import UsuariosRegistrados from './components/UsuariosRegistrados.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
+import CrearViaje from './components/CrearViaje.jsx'; // Nuevo: Importa el componente CrearViaje
 
 function App() {
   const [usuarios, setUsuarios] = useState([]);
@@ -31,6 +32,7 @@ function App() {
   const [usuarioLogeado, setUsuarioLogeado] = useState(null);
 
   const navigate = useNavigate();
+  // ¡CORRECCIÓN! La URL de la API ahora apunta al puerto 5000 para coincidir con tu archivo .env
   const API_URL = 'http://localhost:5000/api';
 
   const fetchUsuarios = async () => {
@@ -181,27 +183,12 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="/mis-rutas"
+        <Route // Nueva ruta para el componente CrearViaje
+          path="/crear-viaje"
           element={
             <ProtectedRoute usuarioLogeado={usuarioLogeado} allowedRoles={['conductor']}>
-              <div className="p-6 bg-white rounded-lg shadow-md">
-                <h2 className="text-2xl font-semibold text-gray-800 mb-4">Mis Rutas (Conductor)</h2>
-                <p className="text-gray-600">Aquí el conductor puede ver y gestionar sus rutas asignadas.</p>
-              </div>
+              <CrearViaje usuarioLogeado={usuarioLogeado} />
             </ProtectedRoute>
-          }
-        />
-        <Route
-          path="*"
-          element={
-            <div className="text-center p-8 bg-white rounded-lg shadow-lg">
-              <h2 className="text-3xl font-bold text-red-600">404 - Página no encontrada</h2>
-              <p className="mt-4 text-gray-700">Lo sentimos, la página que buscas no existe.</p>
-              <Link to={usuarioLogeado ? "/dashboard" : "/"} className="mt-6 inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md">
-                Volver al Inicio
-              </Link>
-            </div>
           }
         />
       </Routes>
