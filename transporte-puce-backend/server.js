@@ -13,6 +13,10 @@ require('dotenv').config(); // Para cargar variables de entorno desde un archivo
 const app = express();
 const port = process.env.PORT || 5000; // Puerto para tu servidor backend, por defecto 5000
 
+// --- IDENTIFICADOR DEL ADMINISTRADOR PRINCIPAL ---
+// CAMBIO: Se define el email del único usuario que tendrá rol de 'admin'
+const ADMIN_EMAIL = 'admin@transporte.com';
+
 // Configuración de la conexión a PostgreSQL usando variables de entorno
 const pool = new Pool({
     user: process.env.DB_USER,
@@ -100,7 +104,9 @@ app.get('/api/usuarios', async (req, res) => {
 
 // Ruta: Registrar un nuevo usuario (Alineado con tu esquema de 'usuarios')
 app.post('/api/usuarios/registro', async (req, res) => {
-    const { nombre, apellido, email, contrasena, rol, telefono } = req.body;
+    // CAMBIO: Se ignora el rol del cuerpo de la solicitud y se fuerza a 'estudiante'
+    const { nombre, apellido, email, contrasena, telefono } = req.body;
+    const rol = 'estudiante'; 
 
     if (!nombre || !apellido || !email || !contrasena) {
         return res.status(400).json({ error: 'Todos los campos obligatorios (nombre, apellido, email, contraseña) deben ser proporcionados.' });
@@ -119,7 +125,7 @@ app.post('/api/usuarios/registro', async (req, res) => {
 
         const result = await pool.query(
             'INSERT INTO usuarios (nombre, apellido, email, contrasena, rol, telefono) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, nombre, apellido, email, rol, telefono, fecha_registro',
-            [nombre, apellido, email, contrasenaHasheada, rol || 'estudiante', telefono] // 'estudiante' como rol por defecto
+            [nombre, apellido, email, contrasenaHasheada, rol, telefono] 
         );
         res.status(201).json({
             message: 'Usuario registrado exitosamente!',
@@ -142,7 +148,7 @@ app.post('/api/usuarios/login', async (req, res) => {
     try {
         // Buscar el usuario por email e incluir la foto_perfil_url
         const result = await pool.query('SELECT id, nombre, apellido, email, contrasena, rol, telefono, fecha_registro, foto_perfil_url FROM usuarios WHERE email = $1', [email]);
-        const user = result.rows[0];
+        let user = result.rows[0];
 
         if (!user) {
             return res.status(401).json({ error: 'Credenciales inválidas.' });
@@ -153,6 +159,16 @@ app.post('/api/usuarios/login', async (req, res) => {
 
         if (!isMatch) {
             return res.status(401).json({ error: 'Credenciales inválidas.' });
+        }
+
+        // CAMBIO: Lógica para garantizar un único administrador
+        if (user.email === ADMIN_EMAIL) {
+            user.rol = 'admin';
+        } else {
+            // Asegurarse de que ningún otro usuario pueda ser 'admin'
+            if (user.rol === 'admin') {
+                user.rol = 'estudiante';
+            }
         }
 
         // Excluir la contraseña del objeto de respuesta antes de enviarlo al frontend

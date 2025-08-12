@@ -53,8 +53,8 @@ function Dashboard({ usuarioLogeado, handleLogout, updateUsuarioLogeadoProfilePi
               Ver Horarios
             </Link>
           </li>
-          {/* Solo se mostrará si el rol no es 'admin' o 'conductor' */}
-          {usuarioLogeado.rol === 'estudiante' && (
+          {/* Se mostrará si el rol no es 'admin' */}
+          {usuarioLogeado.rol !== 'admin' && (
             <>
               <li>
                 <Link to="/reserva" className="nav-link indigo">
