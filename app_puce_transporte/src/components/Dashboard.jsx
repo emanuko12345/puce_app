@@ -47,21 +47,28 @@ function Dashboard({ usuarioLogeado, handleLogout, updateUsuarioLogeadoProfilePi
 
       <nav>
         <ul className="nav-list">
+          {/* Se mostrará siempre */}
           <li>
             <Link to="/horarios" className="nav-link">
               Ver Horarios
             </Link>
           </li>
-          <li>
-            <Link to="/reserva" className="nav-link indigo">
-              Realizar Reserva
-            </Link>
-          </li>
-          <li>
-            <Link to="/reservas" className="nav-link green">
-              Ver Mis Reservas
-            </Link>
-          </li>
+          {/* Solo se mostrará si el rol no es 'admin' o 'conductor' */}
+          {usuarioLogeado.rol === 'estudiante' && (
+            <>
+              <li>
+                <Link to="/reserva" className="nav-link indigo">
+                  Realizar Reserva
+                </Link>
+              </li>
+              <li>
+                <Link to="/reservas" className="nav-link green">
+                  Ver Mis Reservas
+                </Link>
+              </li>
+            </>
+          )}
+          {/* Solo se mostrará si el rol es 'admin' */}
           {usuarioLogeado.rol === 'admin' && (
             <li>
               <Link to="/usuarios-registrados" className="nav-link orange">
@@ -69,6 +76,7 @@ function Dashboard({ usuarioLogeado, handleLogout, updateUsuarioLogeadoProfilePi
               </Link>
             </li>
           )}
+          {/* Solo se mostrará si el rol es 'conductor' */}
           {usuarioLogeado.rol === 'conductor' && (
             <li>
               <Link to="/crear-viaje" className="nav-link yellow">
