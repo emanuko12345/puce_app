@@ -11,7 +11,9 @@ const fs = require('fs'); // Para manejar el sistema de archivos (crear director
 require('dotenv').config(); // Para cargar variables de entorno desde un archivo .env
 
 const app = express();
-const port = process.env.PORT || 5002; // Puerto para tu servidor backend, por defecto 5000
+const port = process.env.PORT || 5002; // Puerto para tu serv
+
+const ADMIN_EMAIL = 'admin@transporte.com';
 
 // Configuración de la conexión a PostgreSQL usando variables de entorno
 const pool = new Pool({

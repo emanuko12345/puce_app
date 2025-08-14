@@ -5,18 +5,14 @@ import './Dashboard.css';
 import ProfilePictureUploader from './ProfilePictureUploader.jsx';
 
 function Dashboard({ usuarioLogeado, handleLogout, updateUsuarioLogeadoProfilePic }) {
-  // Estado para la URL de la foto de perfil. Inicializa con la que viene del usuarioLogeado
   const [profileImageUrl, setProfileImageUrl] = useState(usuarioLogeado?.foto_perfil_url || null);
 
-  // Efecto para actualizar profileImageUrl cuando usuarioLogeado.foto_perfil_url cambie
   useEffect(() => {
     setProfileImageUrl(usuarioLogeado?.foto_perfil_url || null);
-  }, [usuarioLogeado?.foto_perfil_url]); // Se ejecuta cuando la URL de la foto de perfil del usuario logeado cambia
+  }, [usuarioLogeado?.foto_perfil_url]);
 
-  // Callback para actualizar la URL de la foto de perfil después de una subida exitosa
   const handleProfileUploadSuccess = (newImageUrl) => {
     setProfileImageUrl(newImageUrl);
-    // Llama a la función pasada desde App.jsx para actualizar el estado global
     updateUsuarioLogeadoProfilePic(newImageUrl);
   };
 
@@ -31,12 +27,8 @@ function Dashboard({ usuarioLogeado, handleLogout, updateUsuarioLogeadoProfilePi
       </h1>
 
       <div className="session-info">
-        
-        {/* Se ha eliminado la visualización de la foto de perfil de esta sección */}
-        
       </div>
 
-      {/* Incluye el componente ProfilePictureUploader, que es donde se gestiona y visualiza la foto */}
       {usuarioLogeado && (
         <ProfilePictureUploader
           userId={usuarioLogeado.id}
@@ -53,21 +45,25 @@ function Dashboard({ usuarioLogeado, handleLogout, updateUsuarioLogeadoProfilePi
               Ver Horarios
             </Link>
           </li>
-          {/* Solo se mostrará si el rol no es 'admin' o 'conductor' */}
-          {usuarioLogeado.rol === 'estudiante' && (
-            <>
-              <li>
-                <Link to="/reserva" className="nav-link indigo">
-                  Realizar Reserva
-                </Link>
-              </li>
-              <li>
-                <Link to="/reservas" className="nav-link green">
-                  Ver Mis Reservas
-                </Link>
-              </li>
-            </>
+
+          {/* Solo se mostrará si el rol es 'estudiante' o 'conductor' */}
+          {(usuarioLogeado.rol === 'estudiante' || usuarioLogeado.rol === 'conductor') && (
+            <li>
+              <Link to="/reserva" className="nav-link indigo">
+                Realizar Reserva
+              </Link>
+            </li>
           )}
+
+          {/* ¡CAMBIO AQUÍ! Solo se mostrará si el rol es 'admin' */}
+          {usuarioLogeado.rol === 'admin' && (
+             <li>
+               <Link to="/reservas" className="nav-link green">
+                 Ver Mis Reservas
+               </Link>
+             </li>
+          )}
+
           {/* Solo se mostrará si el rol es 'admin' */}
           {usuarioLogeado.rol === 'admin' && (
             <li>
@@ -76,11 +72,12 @@ function Dashboard({ usuarioLogeado, handleLogout, updateUsuarioLogeadoProfilePi
               </Link>
             </li>
           )}
+          
           {/* Solo se mostrará si el rol es 'conductor' */}
           {usuarioLogeado.rol === 'conductor' && (
             <li>
               <Link to="/crear-viaje" className="nav-link yellow">
-                Registrar Viaje 
+                Registrar Viaje
               </Link>
             </li>
           )}
@@ -88,15 +85,12 @@ function Dashboard({ usuarioLogeado, handleLogout, updateUsuarioLogeadoProfilePi
       </nav>
 
       <div className="system-info">
-      
         <button
           onClick={handleLogout}
           className="logout-button"
         >
           Cerrar Sesión
         </button>
-
-
       </div>
     </div>
   );
