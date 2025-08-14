@@ -1,5 +1,6 @@
 // src/components/Reservas.jsx
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './Horarios.css'; // Assuming Horarios.css has relevant styles for tables
 
 function Reservas() {
@@ -67,6 +68,11 @@ function Reservas() {
                     </table>
                 </div>
             )}
+
+            {/* Botón para volver al Home */}
+            <Link to="/dashboard" className="nav-link blue">
+                Home
+            </Link>
         </div>
     );
 }

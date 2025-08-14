@@ -15,7 +15,15 @@ function AuthPage({
 
   return (
     <div className="auth-container">
-      <h1 className="auth-title">PUCE Transport App</h1>
+      {/* Hemos reemplazado el título <h1> con una etiqueta <img>.
+        Recuerda cambiar la URL del 'src' por la dirección de tu logo real.
+      */}
+      <img
+        src="https://yt3.googleusercontent.com/Sr5qJIdIh9siUNNzc-OXfs73qGIvizcZir3Zltog_zue6jHYY6BJRXaxRDMHTuq0feFdxCXs6Q=s900-c-k-c0x00ffffff-no-rj"
+        alt="Logo de la Aplicación de Transporte PUCE"
+        className="auth-title"
+      />
+
 
       {mensaje && (
         <div className="auth-message" role="alert">

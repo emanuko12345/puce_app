@@ -1,5 +1,6 @@
 // src/components/Horarios.jsx
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; // ⬅️ Importa Link
 import './Horarios.css';
 
 function Horarios() {
@@ -36,7 +37,10 @@ function Horarios() {
 
     return (
         <div className="horarios-contenedor">
+            
+          
             <h2 className="horarios-titulo">Horarios de Viajes</h2>
+            
             {viajes.length === 0 ? (
                 <p className="mensaje-vacio">No hay viajes programados.</p>
             ) : (
@@ -69,6 +73,13 @@ function Horarios() {
                     </table>
                 </div>
             )}
+  {/* Botón para volver al Home */}
+            <Link to="/dashboard" className="nav-link blue">
+                            Home
+                          </Link>
+
+
+
         </div>
     );
 }

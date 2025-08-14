@@ -161,3 +161,9 @@ select.auth-input {
         padding: 1rem;
     }
 }
+.auth-title {
+  max-width: 100px;  /* tamaño máximo */
+  height: auto;      /* mantiene la proporción */
+  display: block;    /* evita espacios raros */
+  margin: 0 auto;    /* centra horizontalmente */
+}

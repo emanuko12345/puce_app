@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './UsuariosRegistrados.css';
 
 function UsuariosRegistrados({ usuarios }) {
@@ -33,6 +34,11 @@ function UsuariosRegistrados({ usuarios }) {
       ) : (
         <p className="mensaje-vacio">No hay usuarios registrados aún.</p>
       )}
+
+      {/* Botón para volver al Home */}
+      <Link to="/dashboard" className="nav-link blue">
+        Home
+      </Link>
     </div>
   );
 }

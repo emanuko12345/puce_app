@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import './Reserva.css';
 
 function Reserva({ usuarioLogeado }) {
@@ -148,6 +148,11 @@ function Reserva({ usuarioLogeado }) {
                     {mensajeReserva}
                 </p>
             )}
+
+            {/* Botón para volver al Home */}
+            <Link to="/dashboard" className="nav-link blue">
+                Home
+            </Link>
         </div>
     );
 }
