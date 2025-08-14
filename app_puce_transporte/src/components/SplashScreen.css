@@ -1,0 +1,32 @@
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Fondo con imagen */
+  background-image: url('https://www.puce.edu.ec/wp-content/uploads/2020/11/puce-123842_1080x675.jpg'); /* Cambia la ruta */
+  background-size: cover;  /* Cubre toda la pantalla */
+  background-position: center; /* Centrada */
+  background-repeat: no-repeat; /* No repetir */
+
+  /* Si quieres un color por encima de la imagen */
+ 
+
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  z-index: 1000;
+}
+
+.splash-screen.visible {
+  opacity: 1;
+}
+
+.splash-logo {
+  max-width: 80%;
+  max-height: 80%;
+}
