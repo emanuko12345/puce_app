@@ -5,18 +5,14 @@ import './Dashboard.css';
 import ProfilePictureUploader from './ProfilePictureUploader.jsx';
 
 function Dashboard({ usuarioLogeado, handleLogout, updateUsuarioLogeadoProfilePic }) {
-  // Estado para la URL de la foto de perfil. Inicializa con la que viene del usuarioLogeado
   const [profileImageUrl, setProfileImageUrl] = useState(usuarioLogeado?.foto_perfil_url || null);
 
-  // Efecto para actualizar profileImageUrl cuando usuarioLogeado.foto_perfil_url cambie
   useEffect(() => {
     setProfileImageUrl(usuarioLogeado?.foto_perfil_url || null);
-  }, [usuarioLogeado?.foto_perfil_url]); // Se ejecuta cuando la URL de la foto de perfil del usuario logeado cambia
+  }, [usuarioLogeado?.foto_perfil_url]);
 
-  // Callback para actualizar la URL de la foto de perfil después de una subida exitosa
   const handleProfileUploadSuccess = (newImageUrl) => {
     setProfileImageUrl(newImageUrl);
-    // Llama a la función pasada desde App.jsx para actualizar el estado global
     updateUsuarioLogeadoProfilePic(newImageUrl);
   };
 
@@ -27,16 +23,13 @@ function Dashboard({ usuarioLogeado, handleLogout, updateUsuarioLogeadoProfilePi
   return (
     <div className="dashboard-container">
       <h1 className="dashboard-title">
-        Hola Bienvenido, {usuarioLogeado.nombre}!
+        Hola Bienvenido, {usuarioLogeado.nombre}! 👋
       </h1>
 
       <div className="session-info">
-        
-        {/* Se ha eliminado la visualización de la foto de perfil de esta sección */}
-        
+        {/* Foto de perfil manejada en ProfilePictureUploader */}
       </div>
 
-      {/* Incluye el componente ProfilePictureUploader, que es donde se gestiona y visualiza la foto */}
       {usuarioLogeado && (
         <ProfilePictureUploader
           userId={usuarioLogeado.id}
@@ -47,44 +40,41 @@ function Dashboard({ usuarioLogeado, handleLogout, updateUsuarioLogeadoProfilePi
 
       <nav>
         <ul className="nav-list">
-          {/* Se mostrará siempre */}
-          
           <li>
-            <Link to="/horarios" className="nav-link">
+            🕒 <Link to="/horarios" className="nav-link">
               Ver Horarios
             </Link>
           </li>
-         
-          {/* Se mostrará si el rol no es 'admin' */}
+
           {usuarioLogeado.rol !== 'admin' && (
             <>
               <li>
-                <Link to="/reserva" className="nav-link indigo">
-                  Realizar Reserva
+                🎟️ <Link to="/reserva" className="nav-link navy blue">
+                  Ver Reserva
                 </Link>
               </li>
-             
             </>
           )}
-         {usuarioLogeado.rol === 'admin' && (
-  <>
-    <li>
-      <Link to="/usuarios-registrados" className="nav-link orange">
-        Ver Usuarios Registrados
-      </Link>
-    </li>
-    <li>
-      <Link to="/reservas" className="nav-link green">
-        Ver Mis Reservas
-      </Link>
-    </li>
-  </>
-)}
-          {/* Solo se mostrará si el rol es 'conductor' */}
+
+          {usuarioLogeado.rol === 'admin' && (
+            <>
+              <li>
+                👥 <Link to="/usuarios-registrados" className="nav-link navy blue">
+                  Ver Usuarios Registrados
+                </Link>
+              </li>
+              <li>
+                📑 <Link to="/reservas" className="nav-link blue">
+                  Ver Mis Reservas
+                </Link>
+              </li>
+            </>
+          )}
+
           {usuarioLogeado.rol === 'conductor' && (
             <li>
-              <Link to="/crear-viaje" className="nav-link yellow">
-                Registrar Viaje 
+              🚗 <Link to="/crear-viaje" className="nav-link navy blue">
+                Registrar Viaje
               </Link>
             </li>
           )}
@@ -92,15 +82,10 @@ function Dashboard({ usuarioLogeado, handleLogout, updateUsuarioLogeadoProfilePi
       </nav>
 
       <div className="system-info">
-      
-        <button
-          onClick={handleLogout}
-          className="logout-button"
-        >
+        
+        <button onClick={handleLogout} className="logout-button">
           Cerrar Sesión
         </button>
-
-
       </div>
     </div>
   );

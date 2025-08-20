@@ -136,3 +136,9 @@
   list-style: none; /* Esto elimina las viñetas */
   padding: 0;       /* Quita el padding por defecto */
 }
+
+.nav-list li {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* espacio entre emoji y texto */
+}
