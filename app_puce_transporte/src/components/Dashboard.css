@@ -109,3 +109,30 @@
   color: #4a5568;
   margin-bottom: 1rem;
 }
+
+/* 📱 Ajustes para móviles pequeños */
+@media (max-width: 480px) {
+  .dashboard-title {
+    font-size: 1.75rem;
+  }
+
+  .nav-link {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .logout-button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  list-style: none; /* Esto elimina las viñetas */
+  padding: 0;       /* Quita el padding por defecto */
+}

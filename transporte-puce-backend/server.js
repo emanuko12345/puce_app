@@ -102,14 +102,22 @@ app.get('/api/usuarios', async (req, res) => {
     }
 });
 
-// Ruta: Registrar un nuevo usuario (Alineado con tu esquema de 'usuarios')
+// RUTA ACTUALIZADA: Registrar un nuevo usuario con rol configurable
+// Esta ruta permite registrar tanto estudiantes como conductores.
 app.post('/api/usuarios/registro', async (req, res) => {
-    // CAMBIO: Se ignora el rol del cuerpo de la solicitud y se fuerza a 'estudiante'
-    const { nombre, apellido, email, contrasena, telefono } = req.body;
-    const rol = 'estudiante'; 
+    // Se extrae 'rol' del cuerpo de la solicitud
+    const { nombre, apellido, email, contrasena, telefono, rol } = req.body;
 
-    if (!nombre || !apellido || !email || !contrasena) {
-        return res.status(400).json({ error: 'Todos los campos obligatorios (nombre, apellido, email, contraseña) deben ser proporcionados.' });
+    // Validación de campos obligatorios, ahora incluyendo el rol
+    if (!nombre || !apellido || !email || !contrasena || !rol) {
+        return res.status(400).json({ error: 'Todos los campos obligatorios (nombre, apellido, email, contraseña, rol) deben ser proporcionados.' });
+    }
+
+    // Validación para prevenir que un usuario se registre como 'admin'
+    // Los roles permitidos son 'estudiante' y 'conductor'
+    const rolesPermitidos = ['estudiante', 'conductor'];
+    if (!rolesPermitidos.includes(rol)) {
+        return res.status(400).json({ error: 'Rol no válido. Los roles permitidos son "estudiante" o "conductor".' });
     }
 
     try {
@@ -123,14 +131,17 @@ app.post('/api/usuarios/registro', async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const contrasenaHasheada = await bcrypt.hash(contrasena, salt);
 
+        // Insertar el nuevo usuario con el rol proporcionado
         const result = await pool.query(
             'INSERT INTO usuarios (nombre, apellido, email, contrasena, rol, telefono) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, nombre, apellido, email, rol, telefono, fecha_registro',
-            [nombre, apellido, email, contrasenaHasheada, rol, telefono] 
+            [nombre, apellido, email, contrasenaHasheada, rol, telefono]
         );
+
         res.status(201).json({
-            message: 'Usuario registrado exitosamente!',
+            message: `Usuario con rol '${rol}' registrado exitosamente!`,
             usuario: result.rows[0]
         });
+
     } catch (err) {
         console.error('Error al registrar usuario:', err);
         res.status(500).json({ error: 'Error interno del servidor al registrar usuario.' });
@@ -437,7 +448,7 @@ app.get('/api/viajes', async (req, res) => {
                 v.asientos_disponibles > 0
             ORDER BY
                 v.fecha_salida ASC, v.hora_salida ASC
-        `);        res.json(result.rows);
+        `);        res.json(result.rows);
     } catch (err) {
         console.error('Error al obtener viajes:', err);
         res.status(500).json({ error: 'Error interno del servidor al obtener viajes.' });
@@ -545,7 +556,7 @@ app.get('/api/reservas', async (req, res) => {
                 usuarios cond ON v.conductor_id = cond.id AND cond.rol = 'conductor'
             ORDER BY
                 r.fecha_reserva DESC
-        `);        res.json(result.rows);
+        `);        res.json(result.rows);
     } catch (err) {
         console.error('Error al obtener reservas:', err);
         res.status(500).json({ error: 'Error interno del servidor al obtener reservas.' });

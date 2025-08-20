@@ -99,3 +99,41 @@ hr {
     background-color: #eee;
     margin: 2rem 0;
 }
+
+/* 📱 Para móviles pequeños (≤480px) */
+@media (max-width: 480px) {
+  .crear-viaje-container {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .crear-viaje-title {
+    font-size: 1.8rem;
+  }
+
+  .crear-viaje-form h2 {
+    font-size: 1.2rem;
+  }
+
+  .form-group input,
+  .form-group select {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+
+  .crear-viaje-button {
+    font-size: 1rem;
+    padding: 12px;
+  }
+}
+
+/* 💻 Para pantallas grandes (≥1025px) */
+@media (min-width: 1025px) {
+  .crear-viaje-container {
+    max-width: 700px;
+  }
+
+  .crear-viaje-title {
+    font-size: 2.8rem;
+  }
+}

@@ -6,7 +6,7 @@
   margin: 0 auto; /* Centra el contenedor en la página */
   padding: 2rem;
   text-align: center;
-  background: linear-gradient(to right, #d40707, #e5065c); /* Fondo degradado suave */
+  background: linear-gradient(to right, #e0f2f7, #bbdefb); /* Fondo degradado celeste */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente específica para el contenido del root */
   /* NOTA: El #root no necesita height: 100% si el body ya está centrado y el root es solo para el contenido.
      Su altura será determinada por su contenido. */
@@ -44,10 +44,10 @@
   }
 }
 
-/* Tarjetas de contenido (si las usas en tu aplicación) */
+/* Tarjetas de contenido */
 .card {
   padding: 2em;
-  background-color: #e10505dd;
+  background-color: #e0f2f7dd; /* Fondo celeste semi-transparente */
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin-top: 1rem;
@@ -59,7 +59,7 @@
 
 /* Estilo para texto informativo */
 .read-the-docs {
-  color: #ee1010;
+  color: #0d47a1; /* Azul más oscuro */
   font-style: italic;
   margin-top: 1rem;
 }
@@ -74,4 +74,42 @@ label {
   margin-bottom: 0.5rem; /* Espacio debajo */
   margin-top: 1rem; /* Espacio arriba */
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fuente específica para labels */
+}
+
+/* Responsive para pantallas medianas (tablet) */
+@media (max-width: 768px) {
+  #root {
+    padding: 1.5rem;
+  }
+
+  .card {
+    padding: 1.5rem;
+  }
+
+  .logo {
+    height: 5em;
+  }
+
+  label {
+    font-size: 0.9rem;
+  }
+}
+
+/* Responsive para pantallas pequeñas (móviles) */
+@media (max-width: 480px) {
+  #root {
+    padding: 1rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  .logo {
+    height: 4em;
+  }
+
+  label {
+    font-size: 0.8rem;
+  }
 }

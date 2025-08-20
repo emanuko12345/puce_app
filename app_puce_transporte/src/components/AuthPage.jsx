@@ -20,7 +20,7 @@ function AuthPage({
       */}
       <img
         src="https://yt3.googleusercontent.com/Sr5qJIdIh9siUNNzc-OXfs73qGIvizcZir3Zltog_zue6jHYY6BJRXaxRDMHTuq0feFdxCXs6Q=s900-c-k-c0x00ffffff-no-rj"
-        alt="Logo de la Aplicación de Transporte PUCE"
+        alt="fotopuce"
         className="auth-title"
       />
 

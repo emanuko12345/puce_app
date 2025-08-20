@@ -125,3 +125,35 @@
   border: 2px solid #60a5fa;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+/* 📱 Ajustes para móviles pequeños */
+@media (max-width: 480px) {
+  .profile-picture-uploader {
+    padding: 1rem;
+    margin: 1rem;
+  }
+
+  .profile-picture-uploader h3 {
+    font-size: 1rem;
+  }
+
+  .preview-image {
+    max-width: 6rem;
+    max-height: 6rem;
+  }
+
+  .file-input input[type="file"]::file-selector-button {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.75rem;
+  }
+
+  .upload-btn,
+  .delete-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .status-message {
+    font-size: 0.75rem;
+  }
+}
